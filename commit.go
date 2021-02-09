@@ -56,6 +56,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Your commit message: :", string(msg))
+	log.Println("Your commit message: ", string(msg))
 	commit(string(msg))
 }
