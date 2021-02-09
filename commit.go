@@ -40,7 +40,7 @@ func commit(msg string) {
 			log.Fatal(err)
 		}
 	}
-	log.Println("Successfully committed changes for",*files)
+	log.Println("Successfully committed changes for", *files)
 }
 func main() {
 	req, err := http.NewRequest("GET", url, nil)
