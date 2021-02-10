@@ -11,7 +11,7 @@ import (
 
 const URL = "http://whatthecommit.com/index.txt"
 
-var files = flag.String("f", ".", "files to add")
+var files = flag.String("f", ".", "files to git add")
 var branch = flag.String("b", "", "push to remote branch")
 
 func commit(msg string) {
