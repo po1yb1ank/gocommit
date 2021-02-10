@@ -5,29 +5,24 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"os/exec"
 	"runtime"
 )
 
 const URL = "http://whatthecommit.com/index.txt"
 
-var files = flag.String("f", "nil", "files to add")
-var branch = flag.String("b", "nil", "push to remote branch")
+var files = flag.String("f", ".", "files to add")
+var branch = flag.String("b", "", "push to remote branch")
 
 func commit(msg string) {
 	flag.Parse()
-	if *files == "nil" || *branch == "nil" {
-		log.Println("Usage: -f main.go foo.go (files to git add)")
-		log.Println("-b master (remote branch)")
-		os.Exit(1)
-	}
 	switch runtime.GOOS {
 	case "windows":
 		err := exec.Command("cmd", "/C", "git", "add", *files).Run()
 		if err != nil {
 			log.Fatal("Something wrong happened. Check your files list", err)
 		}
+		log.Println("Added files: ", *files)
 		err = exec.Command("cmd", "/C", "git", "commit", "-m", msg).Run()
 		if err != nil {
 			log.Fatal(err)
@@ -36,11 +31,16 @@ func commit(msg string) {
 		if err != nil {
 			log.Fatal(err)
 		}
+		log.Print("Pushed to: ", *branch)
+		if *branch == "" {
+			log.Println("default branch")
+		}
 	case "linux":
 		err := exec.Command("bash", "git", "add", *files).Run()
 		if err != nil {
 			log.Fatal("Something wrong happened. Check your files list", err)
 		}
+		log.Println("Added files: ", *files)
 		err = exec.Command("bash", "git", "commit", "-m", msg).Run()
 		if err != nil {
 			log.Fatal(err)
@@ -48,6 +48,10 @@ func commit(msg string) {
 		err = exec.Command("bash", "git", "push", "origin", *branch).Run()
 		if err != nil {
 			log.Fatal(err)
+		}
+		log.Print("Pushed to: ", *branch)
+		if *branch == "" {
+			log.Println("default branch")
 		}
 	}
 	log.Println("Successfully committed changes for", *files)
