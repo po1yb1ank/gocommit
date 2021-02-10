@@ -1,5 +1,5 @@
 # gocommit
-Auto git commit generator and pusher.
+Awesome auto git commit generator and pusher.
 This little package allows you to make this:
 ```bash
 git add .
