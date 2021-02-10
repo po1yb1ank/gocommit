@@ -10,7 +10,7 @@ import (
 	"runtime"
 )
 
-const url = "http://whatthecommit.com/index.txt"
+const URL = "http://whatthecommit.com/index.txt"
 
 var files = flag.String("f", "nil", "files to add")
 var branch = flag.String("b", "nil", "push to remote branch")
@@ -53,7 +53,7 @@ func commit(msg string) {
 	log.Println("Successfully committed changes for", *files)
 }
 func main() {
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", URL, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
