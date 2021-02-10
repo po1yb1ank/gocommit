@@ -27,7 +27,12 @@ func commit(msg string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = exec.Command("cmd","/C", "git", "push", "origin", *branch).Run()
+		switch *branch {
+		case "":
+			err = exec.Command("cmd","/C", "git", "push", "origin").Run()
+		default:
+			err = exec.Command("cmd","/C", "git", "push", "origin", *branch).Run()
+		}
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -45,7 +50,12 @@ func commit(msg string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = exec.Command("bash", "git", "push", "origin", *branch).Run()
+		switch *branch {
+		case "":
+			err = exec.Command("bash", "git", "push", "origin").Run()
+		default:
+			err = exec.Command("bash", "git", "push", "origin", *branch).Run()
+		}
 		if err != nil {
 			log.Fatal(err)
 		}
