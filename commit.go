@@ -2,84 +2,15 @@ package main
 
 import (
 	"flag"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os/exec"
-	"runtime"
+	"github.com/po1yb1ank/gocommit/profiler"
 )
 
-const URL = "http://whatthecommit.com/index.txt"
+var profile = flag.String("p", "committer", "auto committer profile")
+var files = flag.String("f", ".", "files for committer profile")
+var branch = flag.String("b", "", "branch for committer profile")
+var remote = flag.String("r", "", "remote repo for reminit")
 
-var files = flag.String("f", ".", "files to git add")
-var branch = flag.String("b", "", "push to remote branch")
-
-func commit(msg string) {
-	flag.Parse()
-	switch runtime.GOOS {
-	case "windows":
-		err := exec.Command("cmd", "/C", "git", "add", *files).Run()
-		if err != nil {
-			log.Fatal("Something wrong happened. Check your files list", err)
-		}
-		log.Println("Added files: ", *files)
-		err = exec.Command("cmd", "/C", "git", "commit", "-m", msg).Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-		switch *branch {
-		case "":
-			err = exec.Command("cmd","/C", "git", "push", "origin").Run()
-		default:
-			err = exec.Command("cmd","/C", "git", "push", "origin", *branch).Run()
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Print("Pushed to: ", *branch)
-		if *branch == "" {
-			log.Println("default branch")
-		}
-	case "linux":
-		err := exec.Command("bash", "git", "add", *files).Run()
-		if err != nil {
-			log.Fatal("Something wrong happened. Check your files list", err)
-		}
-		log.Println("Added files: ", *files)
-		err = exec.Command("bash", "git", "commit", "-m", msg).Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-		switch *branch {
-		case "":
-			err = exec.Command("bash", "git", "push", "origin").Run()
-		default:
-			err = exec.Command("bash", "git", "push", "origin", *branch).Run()
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Print("Pushed to: ", *branch)
-		if *branch == "" {
-			log.Println("default branch")
-		}
-	}
-	log.Println("Successfully committed changes for", *files)
-}
 func main() {
-	req, err := http.NewRequest("GET", URL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer res.Body.Close()
-	msg, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Your commit message: ", string(msg))
-	commit(string(msg))
+	flag.Parse()
+	profiler.ExecProfile(*profile, *files, *branch, *remote)
 }
