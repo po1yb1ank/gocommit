@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
-	"runtime"
 )
 type executor func(args ...string)
 
@@ -30,7 +28,7 @@ func initProfs()map[string]executor{
 		if err != nil{
 			log.Fatal("Something wrong happened.", err)
 		}
-		/* commit with message */
+		/* git commit with message */
 		err = Commit("init commit")
 		if err != nil{
 			log.Fatal("Something wrong happened.", err)
@@ -47,57 +45,33 @@ func initProfs()map[string]executor{
 		log.Println("Successfully committed and pushed changes for", args[0], "in branch", args[1])
 	}
 	profs["committer"] = func(args ...string) {
+		/* get commit message */
 		msg := getCommitMsg()
-		switch runtime.GOOS {
-		case "windows":
-			err := exec.Command("cmd", "/C", "git", "add", args[0]).Run()
-			if err != nil {
-				log.Fatal("Something wrong happened. Check your files list", err)
-			}
-			log.Println("Added files: ", args[0])
-			err = exec.Command("cmd", "/C", "git", "commit", "-m", msg).Run()
-			if err != nil {
-				log.Fatal(err)
-			}
-			switch args[1] {
-			case "":
-				err = exec.Command("cmd","/C", "git", "push", "origin").Run()
-			default:
-				err = exec.Command("cmd","/C", "git", "push", "origin", args[1]).Run()
-			}
-			if err != nil {
-				log.Fatal(err)
-			}
-			log.Print("Pushed to: ", args[1])
-			if args[1] == "" {
-				log.Println("default branch")
-			}
-		case "linux":
-			err := exec.Command("bash", "git", "add", args[0]).Run()
-			if err != nil {
-				log.Fatal("Something wrong happened. Check your files list", err)
-			}
-			log.Println("Added files: ", args[0])
-			err = exec.Command("bash", "git", "commit", "-m", string(msg)).Run()
-			if err != nil {
-				log.Fatal(err)
-			}
-			switch args[1] {
-			case "":
-				err = exec.Command("bash", "git", "push", "origin").Run()
-			default:
-				err = exec.Command("bash", "git", "push", "origin", args[1]).Run()
-			}
-			if err != nil {
-				log.Fatal(err)
-			}
-			log.Print("Pushed to: ", args[1])
-			if args[1] == "" {
-				log.Println("default branch")
-			}
+
+		/* git add files */
+		err := Add(args[0])
+		if err != nil{
+			log.Fatal("Something wrong happened.", err)
+		}
+		log.Println("Added files: ", args[0])
+
+		/* git commit with message */
+		err = Commit(msg)
+		if err != nil{
+			log.Fatal("Something wrong happened.", err)
+		}
+		/* push to remote */
+		err = Push(args[1])
+		if err != nil{
+			log.Fatal("Something wrong happened.", err)
+		}
+		log.Printf("Pushed to: %s", args[1])
+		if args[1] == "" {
+			log.Println("default branch")
 		}
 		log.Println("Successfully committed and pushed changes for", args[0], "in branch", args[1])
 	}
+
 	return profs
 }
 func getCommitMsg() string{

@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/po1yb1ank/gocommit/profiler"
+	"log"
 )
 
 var profile = flag.String("p", "committer", "auto committer profile")
@@ -12,5 +13,11 @@ var remote = flag.String("r", "", "remote repo for reminit")
 
 func main() {
 	flag.Parse()
-	profiler.ExecProfile(*profile, *files, *branch, *remote)
+	err := profiler.ExecProfile(*profile, *files, *branch, *remote)
+	if err != nil{
+		log.Fatal("Something wrong happened while executing ", *profile, "with args:",
+			"\nFiles: ", *files,
+			"\nBranch: ", *branch,
+			"\nRemote: ", *remote)
+	}
 }
