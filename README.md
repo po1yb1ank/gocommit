@@ -1,22 +1,6 @@
-# gocommit v1.0.0
+# gocommit v1.1.0 under construction...
 
 Awesome auto git commit generator and pusher.
-
-This little package allows you to make this:
-
-```bash
-git add .
-git commit -m "Very long commit message I came up with. Who will ever read this???"
-git push origin master
-```
-into this:
-```bash
-gocommit -f . -b master
-```
-or even this (will push to default branch all files in the repo):
-```bash
-gocommit
-```
 
 ## Installation
 ```bash
