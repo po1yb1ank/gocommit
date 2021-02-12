@@ -1,6 +1,7 @@
 package profiler
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 	"runtime"
@@ -76,6 +77,26 @@ func Push(branch string) error{
 		}
 	case "windows":
 		err := exec.Command("cmd", "/C", "git", "push", "origin", branch).Run()
+		if err != nil {
+			log.Fatal("Something wrong happened while git init.", err)
+			return err
+		}
+	}
+	return nil
+}
+func Remote(URL string) error{
+	if URL == ""{
+		return fmt.Errorf("empty remote url")
+	}
+	switch runtime.GOOS {
+	case "linux", "darwin":
+		err := exec.Command("bash", "git", "remote", "add", "origin", URL).Run()
+		if err != nil {
+			log.Fatal("Something wrong happened while git init.", err)
+			return err
+		}
+	case "windows":
+		err := exec.Command("cmd", "/C", "git", "remote", "add", "origin", URL).Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git init.", err)
 			return err

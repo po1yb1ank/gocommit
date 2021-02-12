@@ -33,7 +33,12 @@ func initProfs()map[string]executor{
 		if err != nil{
 			log.Fatal("Something wrong happened.", err)
 		}
-		/* push to remote */
+		/* git remote add origin */
+		err = Remote(args[2])
+		if err != nil{
+			log.Fatal("Something wrong happened.", err)
+		}
+		/* git push origin branch */
 		err = Push(args[1])
 		if err != nil{
 			log.Fatal("Something wrong happened.", err)
