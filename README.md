@@ -1,4 +1,5 @@
-# gocommit v1.0.0
+# gocommit
+### v1.0.0
 
 Awesome auto git commit generator and pusher.
 
