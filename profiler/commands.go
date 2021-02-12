@@ -63,3 +63,23 @@ func Init(branch string)error{
 	}
 	return nil
 }
+func Push(branch string) error{
+	if branch == ""{
+		branch = "master"
+	}
+	switch runtime.GOOS {
+	case "linux", "darwin":
+		err := exec.Command("bash", "git", "push", "origin", branch).Run()
+		if err != nil {
+			log.Fatal("Something wrong happened while git init.", err)
+			return err
+		}
+	case "windows":
+		err := exec.Command("cmd", "/C", "git", "push", "origin", branch).Run()
+		if err != nil {
+			log.Fatal("Something wrong happened while git init.", err)
+			return err
+		}
+	}
+	return nil
+}
