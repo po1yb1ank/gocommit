@@ -54,17 +54,18 @@ func initProfs() map[string]executor {
 		/* get commit message */
 		msg := getCommitMsg()
 
-		/* git add files */
+		/* git add files
 		err := Checkout(args[1])
 		if err != nil {
 			log.Fatal("Something wrong happened.", err)
 		}
+		*/
 		log.Println("Switched to: ", args[1])
 		if args[1] == "" {
 			log.Println("default branch")
 		}
 		/* git add files */
-		err = Add(args[0])
+		err := Add(args[0])
 		if err != nil {
 			log.Fatal("Something wrong happened.", err)
 		}
