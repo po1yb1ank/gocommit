@@ -13,7 +13,8 @@ go install github.com/po1yb1ank/gocommit
   ```bash
     gocommit
   ```
-  this will execute committer profile for all files and default branch. More info below.
+  this will execute committer profile for all files and default branch (master). Don't forger to
+  set upstream if committing not in default branch.
 ### Command-line arguments
 
     -p i -r <link> (-b/-f)      Remote init profile
