@@ -123,13 +123,13 @@ func Checkout(branch string) error {
 	case "linux", "darwin":
 		err := exec.Command("bash", "git", "checkout", branch).Run()
 		if err != nil {
-			log.Fatal("Something wrong happened while git remote add.", err)
+			log.Fatal("Something wrong happened while git checkout.", err)
 			return err
 		}
 	case "windows":
 		err := exec.Command("cmd", "/C", "git", "checkout", branch).Run()
 		if err != nil {
-			log.Fatal("Something wrong happened while git remote add .", err)
+			log.Fatal("Something wrong happened while git checkout.", err)
 			return err
 		}
 	}
