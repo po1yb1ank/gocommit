@@ -72,18 +72,31 @@ func Init(branch string) error {
 
 //Push git push
 func Push(branch string) error {
-	if branch == "" {
-		branch = "master"
-	}
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		err := exec.Command("bash", "git", "push", "origin", branch).Run()
+		if branch != ""{
+			err := exec.Command("bash", "git", "push", "origin", branch).Run()
+			if err != nil {
+				log.Fatal("Something wrong happened while git push.", err)
+				return err
+			}
+			return nil
+		}
+		err := exec.Command("bash", "git", "push", "origin").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git push.", err)
 			return err
 		}
 	case "windows":
-		err := exec.Command("cmd", "/C", "git", "push", "origin", branch).Run()
+		if branch != ""{
+			err := exec.Command("cmd", "/C", "git", "push", "origin", branch).Run()
+			if err != nil {
+				log.Fatal("Something wrong happened while git push.", err)
+				return err
+			}
+			return nil
+		}
+		err := exec.Command("cmd", "/C", "git", "push", "origin").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git push.", err)
 			return err
