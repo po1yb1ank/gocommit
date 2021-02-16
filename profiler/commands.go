@@ -82,7 +82,7 @@ func Push(branch string) error {
 			}
 			return nil
 		}
-		err := exec.Command("bash", "git", "push", "origin").Run()
+		err := exec.Command("bash", "git", "push", "origin", "master").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git push.", err)
 			return err
@@ -96,7 +96,7 @@ func Push(branch string) error {
 			}
 			return nil
 		}
-		err := exec.Command("cmd", "/C", "git", "push", "origin").Run()
+		err := exec.Command("cmd", "/C", "git", "push", "origin", "master").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git push.", err)
 			return err
