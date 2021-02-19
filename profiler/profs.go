@@ -14,7 +14,7 @@ func initProfs() map[string]executor {
 	profs["i"] = func(args ...string) {
 
 		/* init local repo */
-		err := Init(args[2])
+		err := Init()
 		if err != nil {
 			log.Fatal("Something wrong happened.", err)
 		}
