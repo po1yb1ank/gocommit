@@ -49,19 +49,16 @@ func Commit(msg string) error {
 }
 
 //Init git init
-func Init(branch string) error {
-	if branch == "" {
-		branch = "master"
-	}
+func Init() error {
 	switch runtime.GOOS {
 	case "linux", "darwin":
-		err := exec.Command("bash", "git", "init", "-b", branch).Run()
+		err := exec.Command("bash", "git", "init").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git init.", err)
 			return err
 		}
 	case "windows":
-		err := exec.Command("cmd", "/C", "git", "init", "-b", branch).Run()
+		err := exec.Command("cmd", "/C", "git", "init").Run()
 		if err != nil {
 			log.Fatal("Something wrong happened while git init.", err)
 			return err
